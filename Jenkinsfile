@@ -4,6 +4,8 @@ pipeline {
     stage('Build') {
       steps {
         git(url: 'https://github.com/3D23/neuralBackend.git', branch: 'main')
+        sh '''sh "pwd"
+sh "ls"'''
       }
     }
 

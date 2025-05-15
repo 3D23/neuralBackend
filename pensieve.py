@@ -1,4 +1,3 @@
-from matplotlib import pyplot as plt
 import numpy as np
 import torch
 from a2c_model import Actor
@@ -24,7 +23,6 @@ class Pensieve():
     
 
     def predict(self, data: PensievePredictData):
-        #preparing state
         self.state = np.roll(self.state, -1, axis=1)
         self.state[0, -1] = self.bitrates[data.bitrate] / float(np.max(self.bitrates))
         self.state[1, -1] = data.buffer_level / BUFFER_NORM_FACTOR
@@ -33,8 +31,7 @@ class Pensieve():
         self.state[4, :6] = np.array(data.next_video_chunk_sizes) / M_IN_K / M_IN_K
         self.state[5, -1] = np.minimum(data.video_chunk_remain, self.total_video_chunk) / float(self.total_video_chunk)
         self.state = torch.from_numpy(self.state)
-        
-        #predict
+
         with torch.no_grad():
             prob = self.model(self.state.unsqueeze(0).type(dtype=dtype))
         action = prob.multinomial(num_samples=1).detach()

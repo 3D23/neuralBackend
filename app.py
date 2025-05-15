@@ -45,18 +45,17 @@ async def metrics():
 
 @app.post('/update_metrics', status_code=status.HTTP_200_OK)
 async def update_metrics(metrics: AbrMetrics):
-    print(metrics)
-    _ = await run_in_threadpool(set_metrics, metrics)
+    await run_in_threadpool(set_metrics, metrics)
     return {
         'info': 'metrics updated'
     }
 
 
-@app.get('/init_id')
-async def init_id():
-    return {
-            'uuid': uuid.uuid4()
-        }
+# @app.get('/init_id')
+# async def init_id():
+#    return {
+#            'uuid': uuid.uuid4()
+#        }
 
 
 @app.post('/pensieve_predict')

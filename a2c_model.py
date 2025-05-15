@@ -1,4 +1,3 @@
-import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -11,7 +10,6 @@ class Actor(torch.nn.Module):
         self.action_space = action_space
         channel_cnn = 128 
         channel_fc = 128
-        # self.bn = nn.BatchNorm1d(self.input_channel)
         self.actor_conv1 = nn.Conv1d(self.input_channel, channel_cnn, 4)
         self.actor_conv2 = nn.Conv1d(self.input_channel, channel_cnn, 4)
         self.actor_conv3 = nn.Conv1d(self.input_channel, channel_cnn, 4)
@@ -19,20 +17,15 @@ class Actor(torch.nn.Module):
         self.actor_fc_2 = nn.Linear(self.input_channel, channel_fc)
         self.actor_fc_3 = nn.Linear(self.input_channel, channel_fc)
 
-        incoming_size = 2*channel_cnn*5 + 1 * channel_cnn*3 + 3 * channel_fc #
+        incoming_size = 2*channel_cnn*5 + 1 * channel_cnn*3 + 3 * channel_fc
 
         self.fc1 = nn.Linear(in_features=incoming_size, out_features= channel_fc)
         self.fc2 = nn.Linear(in_features=channel_fc, out_features=self.action_space)
 
     def forward(self, inputs):
         throughputs_batch = inputs[:, 2:3, :]
-        # throughputs_batch = self.bn(throughputs_batch)
-
         download_time_batch = inputs[:, 3:4, :]
-        # download_time_batch = self.bn(download_time_batch)
-
         sizes_batch = inputs[:, 4:5, :self.action_space]
-        # sizes_batch = self.bn(sizes_batch)
 
         x_1 = F.relu(self.actor_conv1(throughputs_batch))
         x_2 = F.relu(self.actor_conv2(download_time_batch))
@@ -67,7 +60,6 @@ class Critic(torch.nn.Module):
         self.action_space = action_space
         channel_cnn = 128 
         channel_fc = 128
-        # self.bn = nn.BatchNorm1d(self.input_channel)
         self.critic_conv1 = nn.Conv1d(self.input_channel, channel_cnn, 4)
         self.critic_conv2 = nn.Conv1d(self.input_channel, channel_cnn, 4)
         self.critic_conv3 = nn.Conv1d(self.input_channel, channel_cnn, 4)
@@ -82,13 +74,8 @@ class Critic(torch.nn.Module):
 
     def forward(self, inputs):
         throughputs_batch = inputs[:, 2:3, :] 
-        # throughputs_batch = self.bn(throughputs_batch)
-
         download_time_batch = inputs[:, 3:4, :]
-        # download_time_batch = self.bn(download_time_batch)
-
         sizes_batch = inputs[:, 4:5, :self.action_space]
-        # sizes_batch = self.bn(sizes_batch)
 
         x_1 = F.relu(self.critic_conv1(throughputs_batch))
         x_2 = F.relu(self.critic_conv2(download_time_batch))

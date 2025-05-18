@@ -43,6 +43,7 @@ async def metrics():
         media_type=CONTENT_TYPE_LATEST
     )
 
+
 @app.post('/update_metrics', status_code=status.HTTP_200_OK)
 async def update_metrics(metrics: AbrMetrics):
     await run_in_threadpool(set_metrics, metrics)

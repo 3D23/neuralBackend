@@ -68,5 +68,5 @@ async def pensieve_predict(data: PensievePredictData):
 @app.post('/init_manifest', status_code=status.HTTP_200_OK)
 async def init_manifest(data: InitManifestData):
     global pensieve
-    pensieve = Pensieve(file='a2c_epsilon_gae_epoch_50000.pth', bitrates=data.bitrates, total_video_chunk=data.total_video_chunk)
+    pensieve = Pensieve(file='epsilon_gae_epoch_50000.pth', bitrates=data.bitrates, total_video_chunk=data.total_video_chunk)
     return {'info': 'manifest init success'}

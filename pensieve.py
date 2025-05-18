@@ -1,6 +1,6 @@
 import numpy as np
 import torch
-from a2c_model import Actor
+from pensieve_model import Actor
 from models import PensievePredictData
 
 dtype = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTensor

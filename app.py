@@ -29,7 +29,7 @@ REBUFFERING_TIME = Gauge('rebuffering_time', 'Время ребаферинга'
 
 
 def set_metrics(metrics: AbrMetrics):
-    THROUGHPUT.set(metrics.throughput)
+    THROUGHPUT.labels(algorithm=metrics.algorithm).set(metrics.throughput)
     QOE_SCORE.labels(algorithm=metrics.algorithm).set(metrics.qoe)
     BUFFER_LEVEL.labels(algorithm=metrics.algorithm).set(metrics.buffer_level)
     BITRATE.labels(algorithm=metrics.algorithm).set(metrics.bitrate)

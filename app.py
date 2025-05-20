@@ -21,7 +21,7 @@ pensieve : Pensieve = None
 
 registry = CollectorRegistry()
 
-THROUGHPUT = Gauge('network_throughput', 'Текущая пропускная сопсобность сети', registry=registry)
+THROUGHPUT = Gauge('network_throughput', 'Текущая пропускная сопсобность сети', ['algorithm'], registry=registry)
 QOE_SCORE = Gauge('qoe', 'QoE', ['algorithm'], registry=registry)
 BUFFER_LEVEL = Gauge('buffer_level', "Уровеь буфера", ['algorithm'], registry=registry)
 BITRATE = Gauge('bitrate', 'Выбранный битрейт', ['algorithm'], registry=registry)

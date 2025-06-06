@@ -1,7 +1,7 @@
 import numpy as np
 import torch
-from pensieve_model import Actor
-from models import PensievePredictData
+from model import Actor
+from models import ModelPredictData
 
 dtype = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTensor
 BUFFER_NORM_FACTOR = 10.0
@@ -9,7 +9,7 @@ S_INFO = 6
 S_LEN = 8
 M_IN_K = 1000.0
 
-class Pensieve():
+class AI():
     def __init__(self, file: str, bitrates, total_video_chunk: int):
         self.a_dim = len(bitrates)
         checkpoint_data = torch.load(file)
@@ -22,7 +22,7 @@ class Pensieve():
         self.state = torch.from_numpy(self.state)
     
 
-    def predict(self, data: PensievePredictData):
+    def predict(self, data: ModelPredictData):
         self.state = np.roll(self.state, -1, axis=1)
         self.state[0, -1] = self.bitrates[data.bitrate] / float(np.max(self.bitrates))
         self.state[1, -1] = data.buffer_level / BUFFER_NORM_FACTOR

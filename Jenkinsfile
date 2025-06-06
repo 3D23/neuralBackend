@@ -9,7 +9,6 @@ pipeline {
             rm -rf /neural/app/.git
             cp -R . /neural/app/
             cd /neural 
-            docker system prune --force
             docker-compose up --build -d
         '''
       }

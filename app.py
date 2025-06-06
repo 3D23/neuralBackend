@@ -2,9 +2,9 @@ import uuid
 from fastapi import FastAPI, status
 from fastapi.responses import Response
 from fastapi.middleware.cors import CORSMiddleware
-from models import PensievePredictData, InitManifestData, AbrMetrics
+from models import ModelPredictData, InitManifestData, AbrMetrics
 from fastapi.concurrency import run_in_threadpool
-from pensieve import Pensieve
+from neural import AI
 from prometheus_client import CollectorRegistry, generate_latest, CONTENT_TYPE_LATEST, Gauge
 
 app = FastAPI()
@@ -17,7 +17,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-pensieve : Pensieve = None
+ai : AI = None
 
 registry = CollectorRegistry()
 
@@ -59,15 +59,15 @@ async def update_metrics(metrics: AbrMetrics):
 #        }
 
 
-@app.post('/pensieve_predict')
-async def pensieve_predict(data: PensievePredictData):
-    global pensieve
-    bit_rate = pensieve.predict(data)
+@app.post('/predict')
+async def predict(data: ModelPredictData):
+    global ai
+    bit_rate = ai.predict(data)
     return {'predicted': bit_rate}
 
 
 @app.post('/init_manifest', status_code=status.HTTP_200_OK)
 async def init_manifest(data: InitManifestData):
-    global pensieve
-    pensieve = Pensieve(file='epsilon_gae_epoch_50000.pth', bitrates=data.bitrates, total_video_chunk=data.total_video_chunk)
+    global ai
+    ai = AI(file='epoch_50000.pth', bitrates=data.bitrates, total_video_chunk=data.total_video_chunk)
     return {'info': 'manifest init success'}

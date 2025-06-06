@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-class PensievePredictData(BaseModel):
+class ModelPredictData(BaseModel):
     bitrate: int # quality number
     buffer_level: float # seconds
     video_chunk_size: int # byte
